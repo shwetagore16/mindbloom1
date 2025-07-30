@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MindBloom</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            🌱 MindBloom
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mood.html">My Mood</a></li>
+                <li><a href="relax.html">Relax Zone</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="profile.html">My Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile-outer-center">
+      <main class="dashboard">
+        <h1 class="welcome-message" id="profile-welcome">Hello!</h1>
+        <div class="profile-container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 id="display-name-header">User Name</h2>
+                    <p id="display-email-header">user@example.com</p>
+                </div>
+
+                <div class="profile-body">
+                    <div class="profile-details">
+                        <h3>My Details</h3>
+                        <div class="info-item">
+                            <label>Full Name</label>
+                            <p id="display-name">User Name</p>
+                            <input type="text" id="input-name" class="hidden">
+                        </div>
+                        <div class="info-item">
+                            <label>Email Address</label>
+                            <p id="display-email">user@example.com</p>
+                            <input type="email" id="input-email" class="hidden">
+                        </div>
+                    </div>
+
+                    <div class="profile-stats">
+                        <h3>My Stats</h3>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <span class="stat-label">🧠 Mood Entries</span>
+                                <span class="stat-value" id="stat-mood-entries">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">📖 Journal Entries</span>
+                                <span class="stat-value" id="stat-journal-entries">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-footer">
+                    <button id="edit-profile-btn" class="btn">Edit Profile</button>
+                    <button id="logout-btn" class="btn btn-logout">Log Out</button>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-columns">
+                        <div class="recent-entries">
+                            <h4>Mood Entries</h4>
+                            <div id="recent-moods-list"></div>
+                        </div>
+                        <div class="recent-entries">
+                            <h4>Journal Entries</h4>
+                            <div id="recent-journals-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="toast-notification" class="toast"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.7/dist/umd/supabase.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
