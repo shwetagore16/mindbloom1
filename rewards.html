@@ -43,7 +43,7 @@
                     <button id="pause-timer">Pause</button>
                     <button id="reset-timer">Reset</button>
                 </div>
-                <div class="timer-modes">
+                <div class="mode-btns">
                     <button class="mode-btn active" data-time="1500">Pomodoro</button>
                     <button class="mode-btn" data-time="300">Short Break</button>
                     <button class="mode-btn" data-time="900">Long Break</button>
@@ -52,9 +52,15 @@
 
             <div class="tasks-card">
                 <h2>My Tasks</h2>
+                <div class="task-progress-container">
+                    <div class="task-progress-bar">
+                        <div id="task-progress-fill" class="task-progress-fill"></div>
+                    </div>
+                    <p id="task-counter" class="task-counter">0 of 0 tasks done</p>
+                </div>
                 <div class="task-input">
+                    <i data-feather="plus"></i>
                     <input type="text" id="new-task" placeholder="Add a new task...">
-                    <button id="add-task">+</button>
                 </div>
                 <ul id="task-list"></ul>
             </div>
@@ -64,7 +70,7 @@
                 <div class="reward-input">
                     <input type="text" id="new-reward" placeholder="Add a custom reward...">
                     <input type="number" id="new-reward-duration" placeholder="Mins" min="1" value="5">
-                    <button id="add-reward">+</button>
+                    <button id="add-reward" class="button"><i data-feather="plus"></i></button>
                 </div>
                 <ul id="reward-list"></ul>
             </div>
@@ -89,6 +95,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        feather.replace();
+    </script>
     <script src="rewards.js"></script>
 </body>
 </html>
