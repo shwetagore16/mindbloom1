@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-timer');
     const modeBtns = document.querySelectorAll('.mode-btn');
     const newTaskInput = document.getElementById('new-task');
-    const addTaskBtn = document.getElementById('add-task');
     const taskList = document.getElementById('task-list');
+    const taskProgressFill = document.getElementById('task-progress-fill');
+    const taskCounter = document.getElementById('task-counter');
     const newRewardInput = document.getElementById('new-reward');
     const newRewardDurationInput = document.getElementById('new-reward-duration');
     const addRewardBtn = document.getElementById('add-reward');
@@ -102,20 +103,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Task Logic ---
+    function updateTaskProgress() {
+        const completedTasks = tasks.filter(task => task.completed).length;
+        const totalTasks = tasks.length;
+        const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+        taskProgressFill.style.width = `${progress}%`;
+        taskCounter.textContent = `${completedTasks} of ${totalTasks} tasks done`;
+    }
+
     function renderTasks() {
         taskList.innerHTML = '';
         tasks.forEach((task, index) => {
             const li = document.createElement('li');
             li.className = task.completed ? 'completed' : '';
+            li.dataset.index = index;
+            li.dataset.action = 'complete';
             li.innerHTML = `
-                <span class="task-text">${task.text}</span>
-                <div class="task-actions">
-                    <button class="complete-btn" data-index="${index}">✓</button>
-                    <button class="delete-btn" data-index="${index}">×</button>
+                <div class="task-item-container">
+                    <span class="task-checkbox">
+                        <i data-feather="${task.completed ? 'check-circle' : 'circle'}"></i>
+                    </span>
+                    <span class="task-text">${task.text}</span>
                 </div>
+                <button class="delete-task-btn" data-action="delete">
+                    <i data-feather="trash-2"></i>
+                </button>
             `;
             taskList.appendChild(li);
         });
+        feather.replace(); // Render new icons
+        updateTaskProgress();
         saveData();
     }
 
@@ -129,16 +147,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleTaskAction(e) {
-        const index = e.target.dataset.index;
-        if (e.target.classList.contains('complete-btn')) {
-            tasks[index].completed = !tasks[index].completed;
-            if (tasks[index].completed) {
-                showBloomCard();
-            }
-        } else if (e.target.classList.contains('delete-btn')) {
-            tasks.splice(index, 1);
+        const actionElement = e.target.closest('[data-action]');
+        if (!actionElement) return;
+
+        const li = actionElement.closest('li');
+        if (!li) return;
+        const index = li.dataset.index;
+        const action = actionElement.dataset.action;
+
+        // Stop delete button from also triggering complete
+        if (action === 'delete') {
+            e.stopPropagation();
+            li.classList.add('fade-out');
+            setTimeout(() => {
+                tasks.splice(index, 1);
+                renderTasks();
+            }, 400);
+            return;
         }
-        renderTasks();
+
+        if (action === 'complete') {
+            tasks[index].completed = !tasks[index].completed;
+
+            // Check if all tasks are now complete
+            const allTasksCompleted = tasks.length > 0 && tasks.every(task => task.completed);
+
+            if (allTasksCompleted) {
+                renderTasks(); // Update UI to show the last check
+                setTimeout(() => {
+                    showBloomCard(); // Trigger reward
+                }, 500); // Delay to allow user to see the check animation
+            } else {
+                renderTasks();
+            }
+        }
     }
 
     // --- Reward Logic ---
@@ -230,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener('click', resetTimer);
     modeBtns.forEach(btn => btn.addEventListener('click', switchMode));
 
-    addTaskBtn.addEventListener('click', addTask);
     newTaskInput.addEventListener('keypress', (e) => e.key === 'Enter' && addTask());
     taskList.addEventListener('click', handleTaskAction);
 
