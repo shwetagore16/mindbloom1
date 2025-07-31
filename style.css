@@ -76,12 +76,11 @@ h2 {
 }
 
 .btn {
-    width: 100%;
     padding: 15px;
     border: none;
     border-radius: 10px;
     background-color: #6a82fb;
-    color: white;
+    color: rgb(237, 237, 237);
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
@@ -91,6 +90,41 @@ h2 {
 .btn:hover {
     background-color: #5a72e0;
     transform: translateY(-2px);
+}
+
+.terrarium-btn-row {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.terrarium-action-btn {
+    background: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;     
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    box-shadow: 0 2px 10px rgba(106, 130, 251, 0.08);
+    white-space: nowrap;
+    min-width: 0;
+    width: auto;
+}
+
+.terrarium-action-btn:hover {
+    background: #5a74e6;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 5px 18px rgba(106, 130, 251, 0.18);
+}
+
+.terrarium-action-btn:active {
+    background: #4a62c8;
+    transform: translateY(0) scale(0.98);
 }
 
 .switch-form {
@@ -212,25 +246,13 @@ nav ul li a:hover, .logout-btn:hover {
 }
 
 .dashboard-cards {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
-    animation: fade-in-up 0.8s 0.2s ease-out forwards;
-    opacity: 0;
-    align-items: center;
-}
-
-.dash-card-row {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    width: 100%;
 }
 
 .dash-card {
-    flex: 1;
-    max-width: 300px; 
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -1481,6 +1503,7 @@ transition: opacity 0.4s, top 0.7s cubic-bezier(.5,1.5,.5,1);
     box-shadow: 0 0 0 3px rgba(106, 130, 251, 0.2);
 }
 
+/* Old plant-thought-btn kept for legacy, but not used in terrarium */
 #plant-thought-btn {
     background: var(--accent-color);
     color: white;
@@ -1930,78 +1953,8 @@ transition: opacity 0.4s, top 0.7s cubic-bezier(.5,1.5,.5,1);
     }
 }
 
-
-.bloombox-toggle-btn {
-    position: fixed;
-    top: calc(100vh - 80px); /* Initial position */
-    left: calc(100vw - 80px); /* Initial position */
-    width: 60px;
-    height: 60px;
-    background-color: var(--accent-color);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1999;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0;
-    transform: scale(0);
-}
-
-.bloombox-toggle-btn.show {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.new-chat-widget {
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    transform: translateY(20px) scale(0.95);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.new-chat-widget.show {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.new-chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.bloombox-close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0 5px;
-    line-height: 1;
-}
-
 @media (max-width: 768px) {
     .profile-body {
         grid-template-columns: 1fr;
-    }
-
-    .bloombox-toggle-btn {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-    }
-
-    #new-chat-widget {
-        width: calc(100% - 20px);
-        height: 70vh;
-        bottom: 10px;
-        right: 10px;
-        top: auto;
     }
 }
