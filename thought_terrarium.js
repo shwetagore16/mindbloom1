@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear the input
         thoughtInput.value = '';
         
-        // Show a confirmation message
-        showMessage('Thought added to your terrarium!', 'success');
+        // Show a confirmation message (toast style)
+        showToast('Thought added to your terrarium!');
     }
     
     // Analyze text to determine sentiment (positive/negative/neutral)
@@ -270,19 +270,19 @@ document.addEventListener('DOMContentLoaded', function() {
         return `<div class="thorn-emoji">${randomThorn}</div>`;
     }
     
-    // Show a message to the user
-    function showMessage(message, type = 'info') {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${type}`;
-        messageDiv.textContent = message;
-        
-        // Add to the page
-        document.body.appendChild(messageDiv);
-        
-        // Remove after 3 seconds
+    // Show a toast message (journal-style)
+    function showToast(message) {
+        let toast = document.getElementById('toast-notification');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast-notification';
+            toast.className = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('show');
         setTimeout(() => {
-            messageDiv.classList.add('fade-out');
-            setTimeout(() => messageDiv.remove(), 500);
+            toast.classList.remove('show');
         }, 3000);
     }
     
