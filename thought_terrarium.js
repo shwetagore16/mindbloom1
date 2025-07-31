@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     
     // Plant elements and positions
-    const plantElements = [];
+    let plantElements = [];
     const maxPlants = 20; // Maximum number of plants in the terrarium
     
     // Initialize
@@ -66,6 +66,16 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('beforeunload', function() {
             saveGarden();
         });
+
+        // Save Changes button
+        const saveGardenBtn = document.getElementById('save-garden-btn');
+        if (saveGardenBtn) {
+            saveGardenBtn.addEventListener('click', function() {
+                if (saveGarden()) {
+                    showToast('Garden saved!');
+                }
+            });
+        }
     }
 
     // Add a thought to the terrarium based on text analysis
