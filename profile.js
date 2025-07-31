@@ -41,63 +41,66 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Data Loading and Display ---
 
     async function loadProfileData() {
+        let supabaseUser = null;
+        let userInfo = null;
         let email = '';
-        let username = 'User'; // Default username
-
+        let username = '';
         try {
+            console.log('=== PROFILE DEBUG START ===');
+            console.log('window.getCurrentUser exists:', !!window.getCurrentUser);
             if (window.getCurrentUser) {
-                const supabaseUser = await window.getCurrentUser();
-                if (!supabaseUser) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                email = supabaseUser.email;
-
-                // Fetch username from the 'Users' table
+                supabaseUser = await window.getCurrentUser();
+                console.log('supabaseUser from getCurrentUser:', supabaseUser);
+                email = supabaseUser?.email || '';
+                console.log('email extracted:', email);
+            }
+            console.log('=== PROFILE DEBUG END ===');
+            if (!email) {
+                console.warn('No email found, would redirect to login');
+                // TEMPORARILY DISABLED: window.location.href = 'login.html';
+                // return;
+                // Show debug info instead
+                if (profileWelcome) profileWelcome.textContent = 'DEBUG: No email found!';
+                if (displayName) displayName.textContent = 'Not logged in';
+                if (displayEmail) displayEmail.textContent = 'No session';
+                return;
+            }
+            // Try to fetch from Users table
+            if (window.supabase && email) {
                 const { data, error } = await window.supabase
                     .from('Users')
-                    .select('Username')
+                    .select('Username, email')
                     .eq('email', email)
                     .single();
-
-                if (error && error.code !== 'PGRST116') { // Ignore 'single row not found' errors
-                    throw error;
-                }
-
-                if (data && data.Username) {
-                    username = data.Username;
+                if (error || !data) {
+                    console.log('User not found in Users table, using email as fallback:', error);
+                    // Use email as fallback if not found in Users table
+                    username = email.split('@')[0]; // Use part before @ as username
                 } else {
-                    // Fallback to the part of the email before the '@'
-                    username = email.split('@')[0];
+                    userInfo = data;
+                    username = userInfo.Username || email.split('@')[0];
+                    email = userInfo.email || email;
                 }
             } else {
-                // Fallback if Supabase is not available
-                const userStr = localStorage.getItem('mindbloom_user');
-                if (userStr) {
-                    const user = JSON.parse(userStr);
-                    username = user.name || 'User';
-                    email = user.email || '';
-                } else {
-                    window.location.href = 'login.html';
-                    return;
-                }
+                // Fallback if no Supabase or email
+                username = email ? email.split('@')[0] : 'User';
             }
-        } catch (error) {
-            console.error('Error loading profile data:', error);
-            // In case of error, use fallback data to avoid a blank page
+        } catch (e) {
+            console.error('Error loading profile:', e);
+            // Still show profile with email fallback
             username = email ? email.split('@')[0] : 'User';
         }
-
-        // Update all UI elements with the fetched data
+        // Show name and email (always show something)
         if (profileWelcome) profileWelcome.textContent = `Hello, ${username}!`;
         if (displayName) displayName.textContent = username;
         if (displayEmail) displayEmail.textContent = email;
+
+        // Update new header fields
         const displayNameHeader = document.getElementById('display-name-header');
         const displayEmailHeader = document.getElementById('display-email-header');
         if (displayNameHeader) displayNameHeader.textContent = username;
         if (displayEmailHeader) displayEmailHeader.textContent = email;
-
-        // Load stats after profile data is loaded
+        // Load and display stats
         loadStats();
     }
 
@@ -222,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const recentMoods = moodEntries.slice(-3).reverse(); // Get last 3
         recentMoodsList.innerHTML = recentMoods.map(entry => `
             <div class="entry-item">
-                <span>${entry.mood}${entry.notes ? ` - ${entry.notes}` : ''}</span>
+                <span>${entry.mood} - ${entry.notes}</span>
                 <span class="date">${new Date(entry.date).toLocaleDateString()}</span>
             </div>
         `).join('');
