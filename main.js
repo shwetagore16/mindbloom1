@@ -21,14 +21,23 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('welcome-message').textContent = `Welcome to MindBloom, ${user.name}!`;
     }
 
-    // Handle logout
-    const logoutButton = document.getElementById('logout-btn');
-    if(logoutButton) {
-        logoutButton.addEventListener('click', function() {
-            localStorage.removeItem('mindbloom_loggedIn');
-            localStorage.removeItem('mindbloom_user');
-            window.location.href = 'login.html';
-        });
+    // Handle login/logout button visibility
+    const loginButton = document.getElementById('login-button');
+    if (loginButton) {
+        if (localStorage.getItem('mindbloom_loggedIn') === 'true') {
+            loginButton.textContent = 'Logout';
+            loginButton.href = '#';
+            loginButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await window.supabaseSignOut();
+                localStorage.removeItem('mindbloom_loggedIn');
+                localStorage.removeItem('mindbloom_user');
+                window.location.href = 'login.html';
+            });
+        } else {
+            loginButton.textContent = 'Login';
+            loginButton.href = 'login.html';
+        }
     }
 
     // Emergency global logout for console use

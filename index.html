@@ -119,7 +119,7 @@
                 <li><a href="relax.html">Relax Zone</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="profile.html">My Profile</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="login.html" id="login-button">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -128,29 +128,33 @@
         <h1 class="welcome-message" id="welcome-message">Welcome to MindBloom, there!</h1>
         
         <div class="dashboard-cards">
-            <div class="dash-card" onclick="window.location.href='relax.html';">
-                <h3>🎧 Relax Zone</h3>
-                <p>Find peace with calming sounds and guided meditations.</p>
+            <div class="dash-card-row">
+                <div class="dash-card" onclick="window.location.href='mood.html';">
+                    <h3>😊 My Mood</h3>
+                    <p>Track your emotions to understand your well-being.</p>
+                </div>
+                <div class="dash-card" onclick="window.location.href='relax.html';">
+                    <h3>🎧 Relax Zone</h3>
+                    <p>Find peace with calming sounds and guided meditations.</p>
+                </div>
+                <div class="dash-card" onclick="window.location.href='journal.html';">
+                    <h3>📓 Journal Space</h3>
+                    <p>Express your thoughts and reflect on your day.</p>
+                </div>
             </div>
-            <div class="dash-card" onclick="window.location.href='journal.html';">
-                <h3>📓 Journal Space</h3>
-                <p>Express your thoughts and reflect on your day.</p>
-            </div>
-            <div class="dash-card" onclick="window.location.href='mood.html';">
-                <h3>😊 My Mood</h3>
-                <p>Track your emotions to understand your well-being.</p>
-            </div>
-            <div class="dash-card" onclick="window.location.href='thought_terrarium.html';">
-                <h3>🌱 Thought Terrarium</h3>
-                <p>Nurture a virtual plant as you grow your habits.</p>
-            </div>
-            <div class="dash-card" onclick="window.location.href='blueprint.html';">
-                <h3>🕸 Web preview</h3>
-                <p>Let go of your burdens—drag & drop your worries into your backpack.</p>
-            </div>
-            <div class="dash-card" onclick="window.location.href='rewards.html';">
-                <h3>🌸 Reward Bloom</h3>
-                <p>Boost productivity with the Pomodoro timer and unlock rewards.</p>
+            <div class="dash-card-row">
+                <div class="dash-card" onclick="window.location.href='rewards.html';">
+                    <h3>🌸 Reward Bloom</h3>
+                    <p>Boost productivity with the Pomodoro timer and unlock rewards.</p>
+                </div>
+                <div class="dash-card" onclick="window.location.href='thought_terrarium.html';">
+                    <h3>🌱 Thought Terrarium</h3>
+                    <p>Nurture a virtual plant as you grow your habits.</p>
+                </div>
+                <div class="dash-card" onclick="window.location.href='blueprint.html';">
+                    <h3>🌐 Web Preview</h3>
+                    <p>Let go of your burdens—drag & drop your worries into your backpack.</p>
+                </div>
             </div>
         </div>
 
@@ -162,9 +166,17 @@
 
     </main>
 
+    <!-- Bloombox Toggle Button -->
+    <div id="bloombox-toggle-btn" class="bloombox-toggle-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M12 18v-2"/></svg>
+    </div>
+
     <!-- New Chat Widget -->
     <div id="new-chat-widget" class="new-chat-widget">
-        <div class="new-chat-header">Bloombox AI</div>
+        <div class="new-chat-header">
+            Bloombox AI
+            <button id="bloombox-close-btn" class="bloombox-close-btn">&times;</button>
+        </div>
         <div id="new-chat-messages" class="new-chat-messages"></div>
         <form id="new-chat-form" class="new-chat-form">
             <input id="new-chat-input" class="new-chat-input" type="text" placeholder="Ask Bloombox anything..." autocomplete="off" />
